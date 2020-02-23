@@ -14,8 +14,6 @@ Vayudev is a deep learning powered & web based automated flight plan builder & i
 2. Intutive Deviation Monitor( Predict deviations before-hand )
 </pre>
 
-![Deviation](https://github.com/anukaisolutions/Vayudev/blob/master/assets/deviation.png)
-
 <h2>Steps</h2>
 <h2>1. 3D Dynamic Airspace Division</h2>
 <h3>Dimenshions<h3>
@@ -24,7 +22,6 @@ Flight Separation Rules
 Prohibited/Restricted Airspaces
 Individual Cube Score
 </pre>
-![Cube](https://github.com/anukaisolutions/Vayudev/blob/master/assets/scoreCube.png)
   
 <h2>2. Individual Cube Score</h2>
 Score = Congestion( Sector Congestion,Airport Congestion,NOTAM’s,Arrival Airport,Departure Airport ) 
@@ -47,3 +44,15 @@ Available in AFTN, XML & CSV
 3. Weather(IMD,MetGIS,OpenWeather,Mode-S,METAR,WorldWeather,NOAA,University of Wyoming,UASS(Radiosonde))
 </pre>
 
+
+![4d Deviation](https://github.com/anukaisolutions/Vayudev/blob/master/assets/4dDeviation.png)
+![Deployment Architecture](https://github.com/anukaisolutions/Vayudev/blob/master/assets/architecture.png)
+![Bada](https://github.com/anukaisolutions/Vayudev/blob/master/assets/bada2.png)
+![Bada](https://github.com/anukaisolutions/Vayudev/blob/master/assets/bada.png)
+![Behaviour Analysis](https://github.com/anukaisolutions/Vayudev/blob/master/assets/behaviour.png)
+![Deviation](https://github.com/anukaisolutions/Vayudev/blob/master/assets/deviation.png)
+![LSTM](https://github.com/anukaisolutions/Vayudev/blob/master/assets/lstm.png)
+![Operation file](https://github.com/anukaisolutions/Vayudev/blob/master/assets/opfile.png)
+![Score Cube](https://github.com/anukaisolutions/Vayudev/blob/master/assets/scoreCube.png)
+![Upper Air Data Calculation](https://github.com/anukaisolutions/Vayudev/blob/master/assets/upperAir.png)
+![Workflow](https://github.com/anukaisolutions/Vayudev/blob/master/assets/workflow.png)
