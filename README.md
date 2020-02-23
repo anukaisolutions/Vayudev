@@ -13,6 +13,7 @@ Vayudev is a deep learning powered & web based automated flight plan builder & i
 1. Automated & Intelligent Flight plan builder( Build most Economical flight plan in seconds )
 2. Intutive Deviation Monitor( Predict deviations before-hand )
 </pre>
+
 ![4d Deviation](https://github.com/anukaisolutions/Vayudev/blob/master/assets/4dDeviation.png)
 
 <h2>Steps</h2>
