@@ -13,6 +13,7 @@ Vayudev is a deep learning powered & web based automated flight plan builder & i
 1. Automated & Intelligent Flight plan builder( Build most Economical flight plan in seconds )
 2. Intutive Deviation Monitor( Predict deviations before-hand )
 </pre>
+![4d Deviation](https://github.com/anukaisolutions/Vayudev/blob/master/assets/4dDeviation.png)
 
 <h2>Steps</h2>
 <h2>1. 3D Dynamic Airspace Division</h2>
@@ -32,7 +33,7 @@ Score = Congestion( Sector Congestion,Airport Congestion,NOTAM’s,Arrival Airps
       + Aerodynamic Drag(Air Density,Aircraft Type,Bank Angle,Coefficient of Drag,Engine Type,Flight Path Angle,Phase of                flight,True Airspeed,Wind Speed,Wind Direction,Weight) 
       + Weather( Air Pressure,Air Temperature,Humidity,Cloud Cover,Thunderstorm,Precipitation)
 
-![4d Deviation](https://github.com/anukaisolutions/Vayudev/blob/master/assets/4dDeviation.png)
+
 
 <h2>Automated & Intelligent Flight Plan Builder</h2>
 <pre>
@@ -63,7 +64,7 @@ Long Short-Term Memory (LSTM) networks are a type of recurrent neural network ca
 ![Bada](https://github.com/anukaisolutions/Vayudev/blob/master/assets/bada.png)
 ![Bada](https://github.com/anukaisolutions/Vayudev/blob/master/assets/bada2.png)
 
-<h3>Operation file for coefficient of drag and coefficient of thrust</h2>
+<h3>Operation file for coefficient of drag and coefficient of thrust</h3>
 ![Operation file](https://github.com/anukaisolutions/Vayudev/blob/master/assets/opfile.png)
 
 <h3>Calculation of upper air data using ground level data and equations</h3>
