@@ -16,12 +16,18 @@ Vayudev is a deep learning powered & web based automated flight plan builder & i
 
 <h2>Steps</h2>
 <h2>1. 3D Dynamic Airspace Division</h2>
-<h3>Dimenshions<h3>
+<h3>Dimenshions</h3>
+  
 <pre>
 Flight Separation Rules
 Prohibited/Restricted Airspaces
 Individual Cube Score
 </pre>
+<<<<<<< HEAD
+=======
+
+![Cube](https://github.com/anukaisolutions/Vayudev/blob/master/assets/scoreCube.png)
+>>>>>>> 27e1fd8f2b7cac4d01ad2aca92be61d345d3db23
   
 <h2>2. Individual Cube Score</h2>
 Score = Congestion( Sector Congestion,Airport Congestion,NOTAM’s,Arrival Airport,Departure Airport ) 
