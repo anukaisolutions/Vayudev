@@ -18,12 +18,14 @@ Vayudev is a deep learning powered & web based automated flight plan builder & i
 
 <h2>Steps</h2>
 <h2>1. 3D Dynamic Airspace Division</h2>
-<h3>Dimenshions<h3>
+<h3>Dimenshions</h3>
+  
 <pre>
 Flight Separation Rules
 Prohibited/Restricted Airspaces
 Individual Cube Score
 </pre>
+
 ![Cube](https://github.com/anukaisolutions/Vayudev/blob/master/assets/scoreCube.png)
   
 <h2>2. Individual Cube Score</h2>
