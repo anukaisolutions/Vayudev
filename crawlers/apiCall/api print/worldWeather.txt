@@ -1,0 +1,70 @@
+LatLon
+Lat 30.72 and Lon 76.79
+12:55 PM
+24
+75
+116
+http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0004_black_low_cloud.png
+Partly cloudy
+None
+None
+242
+WSW
+0.0
+65
+10
+1020
+7
+17
+62
+5
+2019-03-15
+06:33 AM
+06:30 PM
+12:20 PM
+01:43 AM
+Waxing Gibbous
+62
+25
+77
+15
+59
+0.0
+11.6
+5
+30
+17
+62
+3
+None
+242
+116
+WSW
+http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0004_black_low_cloud.png
+Partly cloudy
+0.0
+65
+10
+1020
+7
+17
+62
+10
+50
+17
+62
+5
+8
+17
+62
+0
+84
+0
+35
+77
+0
+0
+0
+0
+0
+5
