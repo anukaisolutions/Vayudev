@@ -14,6 +14,8 @@ Vayudev is a deep learning powered & web based automated flight plan builder & i
 2. Intutive Deviation Monitor( Predict deviations before-hand )
 </pre>
 
+![Deviation](https://github.com/anukaisolutions/Vayudev/assets/deviation.png)
+
 <h2>Steps</h2>
 <h2>1. 3D Dynamic Airspace Division</h2>
 <h3>Dimenshions<h3>
@@ -21,6 +23,7 @@ Vayudev is a deep learning powered & web based automated flight plan builder & i
 Flight Separation Rules
 Prohibited/Restricted Airspaces
 Individual Cube Score
+![3d Cube](https://github.com/anukaisolutions/Vayudev/assets/scoreCube.png)
 </pre>
   
 <h2>2. Individual Cube Score</h2>
