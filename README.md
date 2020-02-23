@@ -14,7 +14,7 @@ Vayudev is a deep learning powered & web based automated flight plan builder & i
 2. Intutive Deviation Monitor( Predict deviations before-hand )
 </pre>
 
-![Deviation](https://github.com/anukaisolutions/Vayudev/assets/deviation.png)
+![Deviation](https://github.com/anukaisolutions/Vayudev/blob/master/assets/deviation.png)
 
 <h2>Steps</h2>
 <h2>1. 3D Dynamic Airspace Division</h2>
@@ -24,7 +24,7 @@ Flight Separation Rules
 Prohibited/Restricted Airspaces
 Individual Cube Score
 </pre>
-![3d Cube](https://github.com/anukaisolutions/Vayudev/assets/scoreCube.png)
+![Cube](https://github.com/anukaisolutions/Vayudev/blob/master/assets/scoreCube.png)
   
 <h2>2. Individual Cube Score</h2>
 Score = Congestion( Sector Congestion,Airport Congestion,NOTAM’s,Arrival Airport,Departure Airport ) 
