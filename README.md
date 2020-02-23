@@ -60,16 +60,16 @@ Long Short-Term Memory (LSTM) networks are a type of recurrent neural network ca
 ![LSTM](https://github.com/anukaisolutions/Vayudev/blob/master/assets/lstm.png)
 ![Workflow](https://github.com/anukaisolutions/Vayudev/blob/master/assets/workflow.png)
 
-<h2>BADA Equations</h2>
+
 
 ![Bada](https://github.com/anukaisolutions/Vayudev/blob/master/assets/bada.png)
 ![Bada](https://github.com/anukaisolutions/Vayudev/blob/master/assets/bada2.png)
 
-<h3>Operation file for coefficient of drag and coefficient of thrust</h3>
+# Operation file for coefficient of drag and coefficient of thrust
 
 ![Operation file](https://github.com/anukaisolutions/Vayudev/blob/master/assets/opfile.png)
 
-<h3>Calculation of upper air data using ground level data and equations</h3>
+# Calculation of upper air data using ground level data and equations
 
 ![Upper Air Data Calculation](https://github.com/anukaisolutions/Vayudev/blob/master/assets/upperAir.png)
 
