@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" type="image/png" sizes="16x16"
+    href="https://www.freeiconspng.com/uploads/transport-airplane-takeoff-icon--android-iconset--icons8-2.png">
+  <title>Vayudev</title>
+  <!-- Bootstrap Core CSS -->
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Menu CSS -->
+  <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="css/style.css" rel="stylesheet">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&ext=.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="papaparse.min.js"></script>
+  <script src="js/matrix.js"></script>
+  <script>
+    var map;
+    var ctaLayer1 = new google.maps.KmlLayer(null);
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('googleMap'), {
+        center: {
+          lat: 28.644800,
+          lng: 77.216721
+        },
+        zoom: 4
+      });
+
+    }
+    function displayKML() {
+      ctaLayer1.setMap(null);
+      let from = document.getElementById('sel1').value
+      let to = document.getElementById('sel2').value
+      console.log(from)
+      console.log(to)
+      if (from == 3 && to == 5) {
+        ctaLayer1 = new google.maps.KmlLayer({
+          url: 'https://s3.ap-south-1.amazonaws.com/rohan-images-test/c-d.kml',
+          map: map
+        });
+        ctaLayer1.setMap(map);
+      }
+      if (from == 1 && to == 6) {
+        ctaLayer1 = new google.maps.KmlLayer({
+          url: 'https://s3.ap-south-1.amazonaws.com/rohan-images-test/d-b.kml',
+          map: map
+        });
+        ctaLayer1.setMap(map);
+      }
+      if (from == 1 && to == 4) {
+        ctaLayer1 = new google.maps.KmlLayer({
+          url: 'https://s3.ap-south-1.amazonaws.com/rohan-images-test/d-m.kml',
+          map: map
+        });
+        ctaLayer1.setMap(map);
+      }
+      document.getElementById("card").style.opacity = "1";
+      // $.ajax({
+      //     type: "GET",
+      //     url: "https://s3.ap-south-1.amazonaws.com/rohan-images-test/2018-06-13.csv",
+      //     dataType: "text",
+      //     success: function(data) {displayHTMLTable(data)}
+      //  });
+
+    }
+
+    function displayHTMLTable(results) {
+      var lines = results.split("\n"),
+        output = [],
+        i;
+      for (i = 0; i < 10; i++) {
+        if (i == 0) {
+          output.push("<thead><tr><th>" +
+            lines[i].slice(0, -1).split(",").join("</th><th>") +
+            "</th></tr></thead>");
+        } else {
+          output.push("<tr><td>" +
+            lines[i].slice(0, -1).split(",").join("</td><td>") +
+            "</td></tr>");
+        }
+
+      }
+      output = "<table>" + output.join("") + "</table>";
+      var div = document.getElementById('parsed_csv_list');
+
+      div.innerHTML = output;
+    }
+
+    function generateCsv() {
+      $.ajax({
+        type: "GET",
+        url: "https://s3.ap-south-1.amazonaws.com/rohan-images-test/2018-06-13.csv",
+        dataType: "text",
+        success: function (data) {
+          displayHTMLTable(data)
+        }
+      });
+    }
+
+    window.onload = function init() {
+      var now = new Date();
+      var utcString = now.toISOString().substring(0, 19);
+      var year = now.getFullYear();
+      var month = now.getMonth() + 1;
+      var day = now.getDate();
+      var hour = now.getHours();
+      var minute = now.getMinutes();
+      var second = now.getSeconds();
+      var localDatetime = year + "-" +
+        (month < 10 ? "0" + month.toString() : month) + "-" +
+        (day < 10 ? "0" + day.toString() : day) + "T" +
+        (hour < 10 ? "0" + hour.toString() : hour) + ":" +
+        (minute < 10 ? "0" + minute.toString() : minute) +
+        utcString.substring(16, 19);
+      var datetimeField = document.getElementById("myDatetimeField");
+      datetimeField.value = localDatetime;
+
+
+      // Call function when show dialog btn is clicked
+      document.getElementById("btn-show-dialog").onclick = function () {
+        show_dialog()
+      };
+      var overlayme = document.getElementById("dialog-container");
+
+      function show_dialog() {
+        /* A function to show the dialog window */
+        overlayme.style.display = "block";
+      }
+
+      // If confirm btn is clicked , the function confim() is executed
+      document.getElementById("confirm").onclick = function () {
+        confirm()
+      };
+
+      function confirm() {
+        /* code executed if confirm is clicked */
+        overlayme.style.display = "none";
+      }
+
+      // If cancel btn is clicked , the function cancel() is executed
+      document.getElementById("cancel").onclick = function () {
+        cancel()
+      };
+
+      function cancel() {
+        /* code executed if cancel is clicked */
+        overlayme.style.display = "none";
+      }
+
+
+      checkbox1 = document.getElementById("chk1");
+      checkbox1.checked = true;
+      checkbox1.onchange = function () {
+        document.getElementById("hey").style.opacity = checkbox1.checked ? '0' : '1';
+      }
+
+      checkbox2 = document.getElementById("chk");
+      checkbox2.checked = false;
+      checkbox2.onchange = function () {
+        if (checkbox2.checked == false) {
+          map.overlayMapTypes.setAt(0, null);
+        } else {
+          map.overlayMapTypes.setAt(0, null);
+          var myMapType = new google.maps.ImageMapType({
+            getTileUrl: function (coord, zoom) {
+              return "https://tile.openweathermap.org/map/clouds_new/1/0/0.png?appid=669be62464bd0ab44c1f093203e947ff"
+            },
+            tileSize: new google.maps.Size(2000, 2000),
+            maxZoom: 9,
+            minZoom: 0,
+            name: 'mymaptype'
+          });
+
+          map.overlayMapTypes.insertAt(0, myMapType);
+        }
+      }
+      //----------------------
+      checkbox3 = document.getElementById("chkk");
+      checkbox3.checked = false;
+      checkbox3.onchange = function () {
+        if (checkbox3.checked == false) {
+          map.overlayMapTypes.setAt(1, null);
+        } else {
+          map.overlayMapTypes.setAt(1, null);
+          var myMapType = new google.maps.ImageMapType({
+            getTileUrl: function (coord, zoom) {
+              return "https://tile.openweathermap.org/map/precipitation_new/1/0/0.png?appid=669be62464bd0ab44c1f093203e947ff"
+            },
+            tileSize: new google.maps.Size(2000, 2000),
+            maxZoom: 9,
+            minZoom: 0,
+            name: 'mymaptype'
+          });
+
+          map.overlayMapTypes.insertAt(1, myMapType);
+        }
+      }
+      //==================
+      checkbox4 = document.getElementById("chkkk");
+      checkbox4.checked = false;
+      checkbox4.onchange = function () {
+        if (checkbox4.checked == false) {
+          map.overlayMapTypes.setAt(2, null);
+        } else {
+          map.overlayMapTypes.setAt(2, null);
+          var myMapType = new google.maps.ImageMapType({
+            getTileUrl: function (coord, zoom) {
+              return "https://tile.openweathermap.org/map/wind_new/1/0/0.png?appid=669be62464bd0ab44c1f093203e947ff"
+            },
+            tileSize: new google.maps.Size(2000, 2000),
+            maxZoom: 9,
+            minZoom: 0,
+            name: 'mymaptype'
+          });
+
+          map.overlayMapTypes.insertAt(2, myMapType);
+        }
+      }
+      //===========================
+      checkbox5 = document.getElementById("chkkkk");
+      checkbox5.checked = false;
+      checkbox5.onchange = function () {
+        if (checkbox5.checked == false) {
+          map.overlayMapTypes.setAt(3, null);
+        } else {
+          map.overlayMapTypes.setAt(3, null);
+          var myMapType = new google.maps.ImageMapType({
+            getTileUrl: function (coord, zoom) {
+              return "https://tile.openweathermap.org/map/temp_new/1/0/0.png?appid=669be62464bd0ab44c1f093203e947ff"
+            },
+            tileSize: new google.maps.Size(2000, 2000),
+            maxZoom: 9,
+            minZoom: 0,
+            name: 'mymaptype'
+          });
+
+          map.overlayMapTypes.insertAt(3, myMapType);
+        }
+      }
+
+
+    }
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqqW5pq28Qera8ScOykfyKpiIP5Cc0XAM&callback=initMap"></script>
+  <style>
+    .select select {
+      margin: 0;
+      padding: .5rem 2.25rem .5rem 1rem;
+      line-height: 1.5;
+      color: #555;
+      background-color: white;
+      border: 0;
+      border: 1px solid #D0D0D0;
+      border-radius: .25rem;
+      cursor: pointer;
+      outline: 0;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    /* Undo the Firefox inner focus ring */
+    .select select:focus:-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 #000;
+    }
+
+    /* Dropdown arrow */
+    .select:after {
+      position: absolute;
+      top: 50%;
+      right: 1.25rem;
+      display: inline-block;
+      content: "";
+      width: 0;
+      height: 0;
+      margin-top: -.15rem;
+      pointer-events: none;
+      border-top: .35rem solid;
+      border-right: .35rem solid transparent;
+      border-bottom: .35rem solid transparent;
+      border-left: .35rem solid transparent;
+    }
+
+    /* Hover state */
+    /* Uncomment if you need it, but be aware of the sticky iOS states.
+.select select:hover {
+  background-color: #ddd;
+}
+*/
+
+    /* Focus */
+    .select select:focus {
+      box-shadow: 0 0 0 .075rem #fff, 0 0 0 .2rem #6d9fca;
+    }
+
+
+    /* Hide the arrow in IE10 and up */
+    .select select::-ms-expand {
+      display: none;
+    }
+
+    /* Media query to target Firefox only */
+    @-moz-document url-prefix() {
+
+      /* Firefox hack to hide the arrow */
+      .select select {
+        text-indent: 0.01px;
+        text-overflow: '';
+        padding-right: 1rem;
+      }
+
+      /* <option> elements inherit styles from <select>, so reset them. */
+      .select option {
+        background-color: white;
+      }
+    }
+
+    /* IE9 hack to hide the arrow */
+    @media screen and (min-width:0\0) {
+      .select select {
+        z-index: 1;
+        padding: .5rem 1.5rem .5rem 1rem;
+      }
+
+      .select:after {
+        z-index: 5;
+      }
+
+      .select:before {
+        position: absolute;
+        top: 0;
+        right: 1rem;
+        bottom: 0;
+        z-index: 2;
+        content: "";
+        display: block;
+        width: 1.5rem;
+        background-color: #eee;
+      }
+
+    }
+
+
+
+    input[type="text"] {
+      padding: 10px 15px;
+      border-radius: 5px;
+      border: 1px solid #D0D0D0;
+      width: 100%;
+      box-sizing: border-box;
+      /* if you already aren't doing universally */
+    }
+
+    [type="datetime-local"] {
+      background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
+    }
+
+    [type="datetime-local"]::-webkit-inner-spin-button {
+      display: none;
+    }
+
+    [type="datetime-local"]::-webkit-calendar-picker-indicator {
+      opacity: 0;
+    }
+
+    label {
+      display: block;
+    }
+
+    input {
+      border: 1px solid #c4c4c4;
+      border-radius: 5px;
+      background-color: #fff;
+      padding: 3px 5px;
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+      width: 190px;
+    }
+
+    * {
+      font-family: 'Acme', sans-serif;
+      -webkit-transition: all .35s ease;
+      -o-transition: all .35s ease;
+      transition: all .35s ease;
+    }
+
+    .excheckbox {
+      width: 100px;
+      height: 30px;
+      background: #f0f0f0;
+      border-radius: 15px;
+      box-sizing: border-box;
+      padding: 0 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .excheckbox label[id*=label-] {
+      display: block;
+      font-size: 12px;
+      line-height: 30px;
+    }
+
+    .excheckbox #label-1 {
+      float: right;
+    }
+
+    .excheckbox #label-2 {
+      float: left;
+    }
+
+    .excheckbox #roll {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      border-radius: 15px;
+      background: rgb(131, 154, 167);
+    }
+
+    .excheckbox input[type=checkbox] {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 2;
+      opacity: 0;
+    }
+
+    .excheckbox input[type=checkbox]:checked+#roll {
+      left: 50%;
+    }
+
+    .excheckbox input[type=checkbox]:not(:checked)+#roll {
+      left: 0;
+    }
+
+    #AliRanjbar {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 13px;
+      color: #444;
+    }
+
+
+    /* Custom */
+    button {
+      display: inline-block;
+      position: relative;
+      padding: 9px 9px;
+      top: 0;
+      font-size: 20px;
+      font-family: "Open Sans", Helvetica;
+      border-radius: 4px;
+      background: rgb(101, 114, 129);
+      color: #fff;
+      box-shadow: 0px 0px 0px rgba(15, 165, 60, 0.1);
+
+      -webkit-transform: translateZ(0);
+      -moz-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+
+      -webkit-transition: all 0.2s ease;
+      -moz-transition: all 0.2s ease;
+      -ms-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      top: -5px;
+      box-shadow: 0px 10px 10px rgba(148, 149, 153, 0.2);
+
+      -webkit-transform: rotateX(10deg);
+      -moz-transform: rotateX(10deg);
+      -ms-transform: rotateX(10deg);
+      transform: rotateX(10deg);
+    }
+
+    button:active {
+      top: 0px;
+      box-shadow: 0px 0px 0px rgba(15, 165, 60, 0.0);
+      background: rgb(46, 54, 51);
+    }
+
+    .box {
+      width: 300px;
+      height: 100px;
+      background-color: rgb(177, 169, 169);
+      color: #fff;
+      padding: 20px;
+      font-size: 20px;
+      position: relative;
+      margin: 40px;
+      float: left;
+    }
+
+
+    .box.arrow-right:after {
+      content: " ";
+      position: absolute;
+      right: -15px;
+      top: 15px;
+      border-top: 15px solid transparent;
+      border-right: none;
+      border-left: 15px solid black;
+      border-bottom: 15px solid transparent;
+    }
+
+    .box.arrow-bottom:after {
+      content: " ";
+      position: absolute;
+      right: 30px;
+      bottom: -15px;
+      border-top: 15px solid black;
+      border-right: 15px solid transparent;
+      border-left: 15px solid transparent;
+      border-bottom: none;
+    }
+
+    .box.arrow-left:after {
+      content: " ";
+      position: absolute;
+      left: -15px;
+      top: 15px;
+      border-top: 15px solid transparent;
+      border-right: 15px solid black;
+      border-left: none;
+      border-bottom: 15px solid transparent;
+    }
+
+    table {
+      max-width: 960px;
+      margin: 10px auto;
+    }
+
+    caption {
+      font-size: 1.6em;
+      font-weight: 400;
+      padding: 10px 0;
+    }
+
+    thead th {
+      font-weight: 500;
+      background: #8a97a0;
+      color: #FFF;
+      font-size: 20px;
+    }
+
+    tr {
+      background: #f4f7f8;
+      border-bottom: 1px solid #FFF;
+      margin-bottom: 5px;
+    }
+
+    tr:nth-child(even) {
+      background: #e8eeef;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 20px;
+      font-weight: 300;
+    }
+
+    tfoot tr {
+      background: none;
+    }
+
+    tfoot td {
+      padding: 10px 2px;
+      font-size: 0.8em;
+      font-style: italic;
+      color: #8a97a0;
+    }
+
+
+    .card {
+      user-select: none;
+      cursor: pointer;
+      transition: box-shadow 150ms, opacity 150ms;
+      border-radius: 8px;
+      padding: 16px;
+      background: #212121;
+      color: white;
+      opacity: 0;
+    }
+
+    .card.dragging {
+      box-shadow: 0px 2px 18px 4px rgba(0, 0, 0, 0.24);
+    }
+
+    .card.throw-away {
+      opacity: .32;
+    }
+
+    .card .card-author {
+      font-size: 3px;
+      color: #999;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 4px;
+    }
+
+    .card .card-author .material-icons {
+      font-size: 17px;
+      margin-right: 4px;
+    }
+
+    .card .card-title {
+      font-size: 18px;
+    }
+
+    .card .card-actions {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      font-size: 14px;
+      color: #00ffde;
+    }
+
+    .popup {
+      width: 300px;
+      padding: 15px;
+      left: 30%;
+      margin-left: 5%;
+      border: 1px solid rgb(1, 82, 73);
+      border-radius: 10px;
+      color: rgb(1, 82, 73);
+      background: white;
+      position: absolute;
+      top: 15%;
+      box-shadow: 5px 5px 5px #000;
+      z-index: 10001;
+      font-weight: 700;
+    }
+
+    .overlay {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, .85);
+      z-index: 10000;
+      display: none;
+    }
+
+    .dialog-btn {
+      background-color: rgb(101, 114, 129);
+      color: white;
+      font-weight: 700;
+      border: 1px solid #44B78B;
+      border-radius: 10px;
+      height: 50px;
+      width: 30%;
+    }
+
+    .dialog-btn:hover {
+      background-color: #015249;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+  </div>
+  <div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
+      <div class="navbar-header"> <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)"
+          data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
+        <div class="top-left-part"></div>
+        <ul class="nav navbar-top-links navbar-left hidden-xs">
+          <li><a href="javascript:void(0)" class="open-close hidden-xs hidden-lg
+waves-effect waves-light"><i class="ti-arrow-circle-left ti-menu"></i>
+            </a></li>
+        </ul>
+        <ul class="nav navbar-top-links navbar-right pull-right">
+          <li>
+            <form role="search" class="app-search hidden-xs">
+              <input type="text" placeholder="Search..." class="form-control">
+              <a href=""><i class="ti-search"></i></a>
+            </form>
+          </li>
+          <li>
+            <a class="profile-pic" href="#"> <img
+                src="data:image/png;base64,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"
+                alt="user-img" width="36" class="img-circle"><b class="hidden-xs"></b> </a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-header -->
+      <!-- /.navbar-top-links -->
+      <!-- /.navbar-static-side -->
+    </nav>
+    <div class="navbar-default sidebar nicescroll" role="navigation">
+      <div class="sidebar-nav navbar-collapse ">
+        <ul class="nav" id="side-menu">
+          <li class="sidebar-search hidden-sm hidden-md hidden-lg">
+            <div class="input-group custom-search-form">
+              <input type="text" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="ti-search"></i> </button>
+              </span>
+            </div>
+          </li>
+          <li>
+            <a href="dashboard.html" class="waves-effect"><img src="./images/3d-builder.png" alt="img" width="20px"
+                height="20px"> <b>3D
+                Airspace</b></a>
+          </li>
+          <li>
+            <a href="profile.html" class="waves-effect"><img src="./images/plan.png" alt="img" width="25px"
+                height="20px">&nbsp;<b>Flight Plan Builder</b></a>
+          </li>
+          <li>
+            <a href="basic-table.html" class="waves-effect"><img src="./images/monitor.png" alt="img" width="20px"
+                height="20px">&nbsp;<b>Deviation Monitor</b><img
+                src="https://cdn4.iconfinder.com/data/icons/user-interface-vol-4-4/68/notification-2-512.png"
+                height="25px" width="25px"></a>
+          </li>
+          <li>
+            <a href="rerouting.html" class="waves-effect"><img src="./images/intuitive.png" alt="img" width="20px"
+                height="20px">&nbsp;<b> Intuitive
+                Deviation</b><img
+                src="https://cdn4.iconfinder.com/data/icons/user-interface-vol-4-4/68/notification-2-512.png"
+                height="25px" width="25px"></a>
+          </li>
+          <!-- <li>
+                    <a href="map-google.html" class="waves-effect"><i class="ti-location-pin fa-fw"></i> Google Map</a>
+                </li>
+                <li>
+                    <a href="blank.html" class="waves-effect"><i class="ti-files fa-fw"></i> Blank Page</a>
+                </li>
+                <li>
+                    <a href="404.html" class="waves-effect"><i class="ti-info fa-fw"></i> Error 404</a>
+                </li> -->
+        </ul>
+        <div class="card" id="card" style="margin-top:100px">
+          <div class="card-author"><i class="material-icons">
+              ALTERNATE AIRPORT
+            </i></div>
+          <div class="" style="text-align:center;font-size: 19px">MAA 119.75 MHz</div>
+          <div class="" style="text-align:center;font-size: 19px">BLR 132.55 MHz</div>
+        </div>
+
+
+      </div>
+      <!-- /.sidebar-collapse -->
+    </div>
+    <!-- Page Content -->
+    <div id="page-wrapper">
+      <div class="container-fluid">
+        <div class="row bg-title">
+          <div class="col-lg-12">
+            <ol class="breadcrumb" style="margin:0px">
+            </ol>
+          </div>
+          <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12">
+            <div class="white-box">
+              <div class="row row-in">
+                <div class="col-lg-12 col-sm-6">
+                  <div class="col-in text-center" style="position:relative">
+                    <div class="imgg"></div><br><br>
+                    <div style="">
+                      <h3 style="font-color:darkgreen">Flight Plan Builder</h3>
+                    </div>
+                  </div><br><br>
+
+                  <div style="background-color:rgb(243, 239, 239);padding: 20px">
+
+                    <div style="text-align: right;padding: 7px;color:black"> Layover? </div>
+
+
+                    <span style="margin-right:20px">
+                      <b style="color:black">DATE AND TIME :</b> <input style="color:black" type="datetime-local"
+                        name="dateofbirth" id="myDatetimeField">
+                    </span>
+                    <span style="margin-right:60px">
+                      <b style="color:black">From </b>:<span class="select">
+                        <select aria-label="Select menu example" id="sel1" style="color:black">
+                          <option value="1" style="color:black">Delhi</option>
+                          <option value="2" style="color:black">Bengaluru</option>
+                          <option value="3" style="color:black" selected>Chandigarh</option>
+                        </select>
+                      </span>&nbsp;
+                      <b style="color:black">To </b> :<span class="select">
+                        <select aria-label="Select menu example" id="sel2" style="color:black">
+                          <option selected>Select Destination</option>
+                          <option value="4">Mumbai</option>
+                          <option value="5" selected>Delhi</option>
+                          <option value="6">Bengaluru</option>
+                        </select>
+                      </span>&nbsp;
+                      <b style="color:black"> AIRCRAFT</b> :<span class="select">
+                        <select aria-label="Select menu example" style="color:black">
+                          <option value="1">A310</option>
+                          <option value="2" selected>A320</option>
+                          <option value="3">A420</option>
+                        </select>
+                      </span>
+                      &nbsp; &nbsp;
+                      <div class="excheckbox" style="float: right">
+                        <label id="label-1" style="color:black">Yes</label>
+                        <label id="label-2" style="color:black">No</label>
+                        <input type="checkbox" id="chk1" name="status" checked>
+
+                        <div id="roll"> </div>
+
+                      </div>
+                      <span class="select" style="float: right;margin-top: 5px">
+                        <select aria-label="Select menu example" style="opacity:0;color:black" id="hey">
+                          <option value="1" style="color:black">Delhi</option>
+                          <option value="2" style="color:black" selected>Chandigarh</option>
+                          <option value="3" style="color:black">Bengaluru</option>
+                        </select>
+                      </span>
+
+
+                    </span>
+                    <div style="text-align: center"><button id="bt" style="margin-top:40px"
+                        onclick="displayKML()">GENERATE</button></div>
+                  </div>
+                </div>
+              </div><br><br>
+              <span style="color:black"> Clouds</span>
+              <div class="excheckbox" style="display:inline-block;margin-right: 150px;width: 50px;height: 20px">
+
+                <input type="checkbox" id="chk" name="status1">
+                <div id="roll"> </div>
+              </div>
+              <span style="color:black"> Precipitation</span>
+              <div class="excheckbox" style="display:inline-block;margin-right: 150px;width: 50px;height: 20px">
+                <input type="checkbox" id="chkk" name="status2" checked>
+                <div id="roll"> </div>
+              </div>
+              <span style="color:black"> Wind Speed</span>
+              <div class="excheckbox" style="display:inline-block;margin-right: 150px;width: 50px;height: 20px">
+
+                <input type="checkbox" id="chkkk" name="status3" checked>
+                <div id="roll"> </div>
+              </div>
+              <span style="color:black"> Temperature</span>
+              <div class="excheckbox" style="display:inline-block;width: 50px;height: 20px">
+
+                <input type="checkbox" id="chkkkk" name="status4" checked>
+                <div id="roll"> </div>
+              </div>
+              <div id="googleMap" style="height: 500px;margin-top: 30px"></div>
+
+            </div>
+            <span style="margin-top: 10px;margin-left: 100px"><span style="margin-right:100px"><button
+                  onclick="generateCsv()" style="width:200px">Generate CSV</button></span>
+              <span style="margin-right:100px"> <button style="width:200px" id="btn-show-dialog">
+                  Export Plan
+                  <!-- <a href="https://s3.ap-south-1.amazonaws.com/rohan-images-test/2019-02-23.kml" download></a> -->
+                </button></span>
+              <span> <button style="width:200px" id="btn-show-dialog">
+                  Email Plan
+                  <!-- <a href="https://s3.ap-south-1.amazonaws.com/rohan-images-test/2019-02-23.kml" download></a> -->
+                </button></span>
+            </span>
+          </div>
+
+        </div>
+        <div id="parsed_csv_list" style="margin-top: 50px"></div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <div class="overlay" id="dialog-container">
+      <div class="popup">
+        <p>Export as ?</p>
+        <div class="text-right">
+          <a href="https://s3.ap-south-1.amazonaws.com/rohan-images-test/fp.xml" download> <button
+              class="dialog-btn btn-cancel" id="cancel">Xml</button></a>
+          <a href="https://s3.ap-south-1.amazonaws.com/rohan-images-test/flight-plan.pdf" download> <button
+              class="dialog-btn btn-primary" id="confirm">PDF</button></a>
+        </div>
+      </div>
+    </div>
+    <!-- /#page-wrapper -->
+    <footer class="footer text-center">© 2019-2020, Anukai Solutions</footer>
+  </div>
+  <!-- /#wrapper -->
+  <!-- jQuery -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- Menu Plugin JavaScript -->
+  <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
+  <!--Nice scroll JavaScript -->
+  <script src="js/jquery.nicescroll.js"></script>
+  <!--Morris JavaScript -->
+  <script src="bower_components/raphael/raphael-min.js"></script>
+  <script src="bower_components/morrisjs/morris.js"></script>
+  <!--Wave Effects -->
+  <script src="js/waves.js"></script>
+  <!-- Custom Theme JavaScript -->
+  <script src="js/myadmin.js"></script>
+  <script src="js/dashboard1.js"></script>
+</body>
+
+</html>

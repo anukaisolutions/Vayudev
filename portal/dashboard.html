@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" type="image/png" sizes="16x16"
+    href="https://www.freeiconspng.com/uploads/transport-airplane-takeoff-icon--android-iconset--icons8-2.png">
+  <title>Vayudev</title>
+  <!-- Bootstrap Core CSS -->
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Menu CSS -->
+  <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+  <!-- Menu CSS -->
+  <link href="bower_components/morrisjs/morris.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="css/style.css" rel="stylesheet">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+  <style>
+    .slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 10px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+    }
+
+    .slider:hover {
+      opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: rgb(20, 22, 20);
+      cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: rgb(22, 24, 22);
+      cursor: pointer;
+    }
+
+    /* .range {
+  position: relative;
+}
+
+.range input {
+  width: 100%;
+  position: absolute;
+  top: 2px;
+  height: 0;
+  -webkit-appearance: none;
+}
+.range input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: -8px 0  0;
+  border-radius: 50%;
+  background: #37adbf;
+  cursor: pointer;
+  border: 0 !important;
+}
+.range input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  margin: -8px 0  0;
+  border-radius: 50%;
+  background: #37adbf;
+  cursor: pointer;
+  border: 0 !important;
+}
+.range input::-ms-thumb {
+  width: 18px;
+  height: 18px;
+  margin: -8px 0  0;
+  border-radius: 50%;
+  background: #37adbf;
+  cursor: pointer;
+  border: 0 !important;
+}
+.range input::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  background: #b2b2b2;
+}
+.range input::-moz-range-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  background: #b2b2b2;
+}
+.range input::-ms-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  background: #b2b2b2;
+}
+.range input:focus {
+  background: none;
+  outline: none;
+}
+.range input::-ms-track {
+  width: 100%;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.range-labels {
+  margin: 18px -41px 0;
+  padding: 0;
+  list-style: none;
+}
+.range-labels li {
+  position: relative;
+  float: left;
+  width: 90.25px;
+  text-align: center;
+  color: #b2b2b2;
+  font-size: 14px;
+  cursor: pointer;
+}
+.range-labels li::before {
+  position: absolute;
+  top: -25px;
+  right: 0;
+  left: 0;
+  content: "";
+  margin: 0 auto;
+  width: 9px;
+  height: 9px;
+  background: #b2b2b2;
+  border-radius: 50%;
+}
+.range-labels .active {
+  color: #37adbf;
+}
+.range-labels .selected::before {
+  background: #37adbf;
+}
+.range-labels .active.selected::before {
+  display: none;
+} */
+  </style>
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&ext=.js"></script>
+
+  <script src="js/matrix.js"></script>
+  <script>
+    var markersArray = [];
+    var map;
+    var poly = [];
+    var markersArray;
+
+    function initialize() {
+      markersArray = a(300)
+      var mapProp = {
+        center: new google.maps.LatLng(20.5937, 78.9629),
+        zoom: 4,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+      for (var i = 0; i < markersArray.length; i++) {
+        var bounds = new google.maps.LatLngBounds();
+
+        poly[i] = new google.maps.Polygon({
+          fillColor: markersArray[i][1].color,
+          strokeOpacity: 0.5,
+          strokeWeight: 0.8,
+          path: markersArray[i][0],
+          map: map
+        });
+
+        for (var pathidx = 0; pathidx < poly[i].getPath().getLength(); pathidx++) {
+          bounds.extend(poly[i].getPath().getAt(pathidx));
+        }
+        // store the computed center as a property of the polygon for easy access
+        poly[i].center = bounds.getCenter();
+        var infowindow = new google.maps.InfoWindow();
+        var title = markersArray[i][1].title;
+        // use function closure to associate the infowindow with the polygon
+        poly[i].addListener('click', (function (content) {
+          return function () {
+            let a = content;
+            let b = "<div style='width:350px;height:200px';>" +
+              "<div style='color:black;font-size:15px';>Aerodynamic Drag index : " + a + "</div><br>" +
+              "<div style='color:black;font-size:15px';>Weather index : " + a + "</div><br>" +
+              "<div style='color:black;font-size:15px';>Congestion index : " + a + "</div><br>" +
+              "</div>"
+            // set the content
+            infowindow.setContent(b);
+            // set the position
+            infowindow.setPosition(this.center);
+            // open it
+            infowindow.open(map);
+          }
+        })(markersArray[i][1].title));
+      }
+
+    }
+    google.maps.event.addDomListener(window, "load", initialize);
+
+    function changeMap(newVal) {
+      for (var i = 0; i < markersArray.length; i++) {
+        poly[i].setMap(null);
+      }
+      document.getElementById("valBox").innerHTML = newVal;
+      markersArray = a(newVal);
+
+      for (var i = 0; i < markersArray.length; i++) {
+        var bounds = new google.maps.LatLngBounds();
+
+        poly[i] = new google.maps.Polygon({
+          fillColor: markersArray[i][1].color,
+          strokeWeight: 0.3,
+          path: markersArray[i][0],
+          map: map
+        });
+
+        for (var pathidx = 0; pathidx < poly[i].getPath().getLength(); pathidx++) {
+          bounds.extend(poly[i].getPath().getAt(pathidx));
+        }
+        // store the computed center as a property of the polygon for easy access
+        poly[i].center = bounds.getCenter();
+        var infowindow = new google.maps.InfoWindow();
+        var title = markersArray[i][1].title;
+        // use function closure to associate the infowindow with the polygon
+        poly[i].addListener('click', (function (content) {
+          return function () {
+            let a = content;
+            let b = "<div style='width:350px;height:200px';>" +
+              "<div style='color:black;font-size:15px';>Aerodynamic Drag index : " + a + "</div><br>" +
+              "<div style='color:black;font-size:15px';>Weather index : " + a + "</div><br>" +
+              "<div style='color:black;font-size:15px';>Congestion index : " + a + "</div><br>" +
+              "</div>"
+            // set the content
+            infowindow.setContent(b);
+            // set the position
+            infowindow.setPosition(this.center);
+            // open it
+            infowindow.open(map);
+          }
+        })(markersArray[i][1].title));
+      }
+    }
+
+    function changeMap1() {
+      var newVal = document.getElementById('myRange').value;
+      document.getElementById("valBox1").innerHTML = new Date().toLocaleTimeString();
+      for (var i = 0; i < markersArray.length; i++) {
+        poly[i].setMap(null);
+      }
+      document.getElementById("valBox").innerHTML = newVal;
+      markersArray = a(newVal);
+
+      for (var i = 0; i < markersArray.length; i++) {
+        var bounds = new google.maps.LatLngBounds();
+
+        poly[i] = new google.maps.Polygon({
+          fillColor: markersArray[i][1].color,
+          strokeWeight: 0.3,
+          path: markersArray[i][0],
+          map: map
+        });
+
+        for (var pathidx = 0; pathidx < poly[i].getPath().getLength(); pathidx++) {
+          bounds.extend(poly[i].getPath().getAt(pathidx));
+        }
+        // store the computed center as a property of the polygon for easy access
+        poly[i].center = bounds.getCenter();
+        var infowindow = new google.maps.InfoWindow();
+        var title = markersArray[i][1].title;
+        // use function closure to associate the infowindow with the polygon
+        poly[i].addListener('click', (function (content) {
+          return function () {
+            let a = content;
+            let b = "<div style='width:350px;height:200px';>" +
+              "<div style='color:black;font-size:15px';>Aerodynamic Drag index : " + a + "</div><br>" +
+              "<div style='color:black;font-size:15px';>Weather index : " + a + "</div><br>" +
+              "<div style='color:black;font-size:15px';>Congestion index : " + a + "</div><br>" +
+              "</div>"
+            // set the content
+            infowindow.setContent(b);
+            // set the position
+            infowindow.setPosition(this.center);
+            // open it
+            infowindow.open(map);
+          }
+        })(markersArray[i][1].title));
+      }
+    }
+
+
+    function myFunction() {
+      document.getElementById("valBox1").innerHTML = new Date().toLocaleTimeString(); // 11:18:48 AM;
+    }
+    var ctaLayer1;
+
+    function displayKML() {
+      if (document.getElementById("dat").value != "") {
+        var e = document.getElementById("selectItem");
+        var value = e.options[e.selectedIndex].value;
+        var text = e.options[e.selectedIndex].text;
+        console.log(value)
+        if (ctaLayer1 != undefined) {
+          ctaLayer1.setMap(null);
+        }
+        if (value == "dc") {
+          ctaLayer1 = new google.maps.KmlLayer({
+            url: 'https://s3.ap-south-1.amazonaws.com/rohan-images-test/2019-02-23.kml',
+          });
+          ctaLayer1.setMap(map);
+          document.getElementById("download").href =
+            "https://s3.ap-south-1.amazonaws.com/rohan-images-test/2019-02-23.kml";
+          document.getElementById('download').click();
+
+        } else if (value == "dm") {
+          ctaLayer1 = new google.maps.KmlLayer({
+            url: 'https://s3.ap-south-1.amazonaws.com/rohan-images-test/2018-06-13.kml',
+          });
+          ctaLayer1.setMap(map);
+          document.getElementById("download").href =
+            "https://s3.ap-south-1.amazonaws.com/rohan-images-test/2018-06-13.kml";
+          document.getElementById('download').click();
+        } else if (value == "db") {
+          ctaLayer1 = new google.maps.KmlLayer({
+            url: 'https://s3.ap-south-1.amazonaws.com/rohan-images-test/2018-09-14.kml',
+          });
+          ctaLayer1.setMap(map);
+          document.getElementById("download").href =
+            "https://s3.ap-south-1.amazonaws.com/rohan-images-test/2018-09-14.kml";
+          document.getElementById('download').click();
+        } else if (value == "dt") {
+          ctaLayer1 = new google.maps.KmlLayer({
+            url: 'https://s3.ap-south-1.amazonaws.com/rohan-images-test/2019-02-01.kml',
+          });
+          ctaLayer1.setMap(map);
+          document.getElementById("download").href =
+            "https://s3.ap-south-1.amazonaws.com/rohan-images-test/2019-02-01.kml";
+          document.getElementById('download').click();
+        }
+      } else {
+        alert("Select Date")
+      }
+    }
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqqW5pq28Qera8ScOykfyKpiIP5Cc0XAM&callback=initMap"></script>
+</head>
+
+<body onload="myFunction()">
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+  </div>
+  <div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
+      <div class="navbar-header"> <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)"
+          data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
+        <div class="top-left-part"></div>
+        <ul class="nav navbar-top-links navbar-left hidden-xs">
+          <li><a href="javascript:void(0)" class="open-close hidden-xs hidden-lg
+ waves-effect waves-light"><i class="ti-arrow-circle-left ti-menu"></i>
+            </a></li>
+        </ul>
+        <ul class="nav navbar-top-links navbar-right pull-right">
+          <li>
+            <form role="search" class="app-search hidden-xs">
+              <input type="text" placeholder="Search..." class="form-control">
+              <a href=""><i class="ti-search"></i></a>
+            </form>
+          </li>
+          <li>
+            <a class="profile-pic" href="#"> <img
+                src="data:image/png;base64,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"
+                alt="user-img" width="36" class="img-circle"><b class="hidden-xs"></b> </a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-header -->
+      <!-- /.navbar-top-links -->
+      <!-- /.navbar-static-side -->
+    </nav>
+    <div class="navbar-default sidebar nicescroll" role="navigation">
+      <div class="sidebar-nav navbar-collapse ">
+        <ul class="nav" id="side-menu">
+          <li class="sidebar-search hidden-sm hidden-md hidden-lg">
+            <div class="input-group custom-search-form">
+              <input type="text" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="ti-search"></i> </button>
+              </span>
+            </div>
+          </li>
+          <li>
+            <a href="dashboard.html" class="waves-effect"><img src="./images/3d-builder.png" alt="img" width="20px"
+                height="20px"> <b>3D
+                Airspace</b></a>
+          </li>
+          <li>
+            <a href="profile.html" class="waves-effect"><img src="./images/plan.png" alt="img" width="25px"
+                height="20px">&nbsp;<b>Flight Plan Builder</b></a>
+          </li>
+          <li>
+            <a href="basic-table.html" class="waves-effect"><img src="./images/monitor.png" alt="img" width="20px"
+                height="20px">&nbsp;<b>Deviation Monitor</b><img
+                src="https://cdn4.iconfinder.com/data/icons/user-interface-vol-4-4/68/notification-2-512.png"
+                height="25px" width="25px"></a>
+          </li>
+          <li>
+            <a href="rerouting.html" class="waves-effect"><img src="./images/intuitive.png" alt="img" width="20px"
+                height="20px">&nbsp;<b> Intuitive
+                Deviation</b><img
+                src="https://cdn4.iconfinder.com/data/icons/user-interface-vol-4-4/68/notification-2-512.png"
+                height="25px" width="25px"></a>
+          </li>
+          <!-- <li>
+                        <a href="map-google.html" class="waves-effect"><i class="ti-location-pin fa-fw"></i> Google Map</a>
+                    </li>
+                    <li>
+                        <a href="blank.html" class="waves-effect"><i class="ti-files fa-fw"></i> Blank Page</a>
+                    </li>
+                    <li>
+                        <a href="404.html" class="waves-effect"><i class="ti-info fa-fw"></i> Error 404</a>
+                    </li> -->
+        </ul>
+      </div>
+      <!-- /.sidebar-collapse -->
+    </div>
+    <!-- Page Content -->
+    <div id="page-wrapper">
+      <div class="container-fluid">
+        <div class="row bg-title">
+          <div class="col-lg-12">
+          </div>
+          <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12">
+            <div class="white-box">
+              <div class="white-box">
+                <div class="col-in text-center" style="position:relative">
+                  <div class="imgg"></div><br><br>
+                  <div style="">
+                    <h3 style="font-color:darkgreen">3D Dynamic Airspace</h3>
+                  </div>
+                </div>
+                <div class="row row-in">
+                  <div class="col-lg-12 col-sm-6">
+                    <div><input type="date" name="bday" value="2019-04-15" id="dat" style="color:black"></div>
+
+                    <div class="col-in text-center" style="color:black;font-size:20px">
+                      Altitude : FL<span id="valBox">300</span>
+                      <div id="slider"></div>
+                      <div class="range">
+                        <input type="range" min="300" max="320" step="10" value="300" class="slider" id="myRange"
+                          oninput="changeMap(this.value)" onchange="changeMap(this.value)">
+                      </div>
+                      <!-- <ul class="range-labels">
+                                          <li class="active selected">1000ft</li>
+                                          <li>2000ft</li>
+                                          <li>3000ft</li>
+                                        </ul> -->
+                    </div>
+                    <div class="col-in text-center" style="color:black;font-size:20px">
+                      Time : <span id="valBox1"></span>
+                      <input type="range" min="1000" max="3000" step="1000" value="1000" class="slider" id="myRange"
+                        oninput="changeMap1()" onchange="changeMap1()">
+                    </div>
+                  </div>
+                </div>
+                <div id="googleMap" style="height: 500px;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      <!-- /#page-wrapper -->
+      <footer class="footer text-center">© 2019-2020, Anukai Solutions</footer>
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <!--Nice scroll JavaScript -->
+    <script src="js/jquery.nicescroll.js"></script>
+    <!--Morris JavaScript -->
+    <script src="bower_components/raphael/raphael-min.js"></script>
+    <script src="bower_components/morrisjs/morris.js"></script>
+    <!--Wave Effects -->
+    <script src="js/waves.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="js/myadmin.js"></script>
+    <script src="js/dashboard1.js"></script>
+</body>
+
+</html>
+<!-- 
+var left = 68.7
+var right = 97.25
+var top = 37.6
+var bottom = 8.4
+
+var editedPolygons = [];
+var i;
+var j;
+for(i=left;i<right;i=i+1){
+for(j=top;j>bottom;j=j-1){
+var inarr = []
+var ininarr = []
+var ininarr2 = []
+	var obj1 = {
+      lng:i,
+      lat:j
+    
+   }
+ var obj2 = { 
+    	lng:i+1,
+      lat:j
+    
+   }
+    	var obj4 = {   
+    	lng:i+1,
+        lat:j-1
+    
+  }
+ var obj3 = {  
+    	 lng:i,
+       lat:j-1
+    
+    }
+
+  var obj5 = {
+      color:'green',
+      title:'hey'
+  }
+  ininarr.push(obj1);
+  ininarr.push(obj2);
+  ininarr.push(obj4);
+  ininarr.push(obj3);
+  inarr.push(ininarr);
+  inarr.push(obj5)
+  editedPolygons.push(inarr);
+}
+}
+console.log(JSON.stringify(editedPolygons)) -->
